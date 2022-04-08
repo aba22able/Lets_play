@@ -5,4 +5,5 @@ module com.kodilla.lets_play {
 
     opens com.kodilla.lets_play to javafx.fxml;
     exports com.kodilla.lets_play;
+    exports com.kodilla.blackjack;
 }
