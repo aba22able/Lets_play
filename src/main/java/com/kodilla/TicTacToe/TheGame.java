@@ -1,10 +1,11 @@
 package com.kodilla.TicTacToe;
 
-import javafx.scene.control.Cell;
 import javafx.scene.layout.GridPane;
 
 public class TheGame
 {
+    private char whoseTurnIs = 'X';
+
     Cell[][] cell = new Cell[3][3];
 
     GridPane pane = new GridPane();
@@ -51,5 +52,41 @@ public class TheGame
     }
 
         return false;
+    }
+
+    public boolean fullBoard()
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                if(cell[i][j].getToken() == ' ')
+                {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public void mouseClick(char token)
+    {
+        if(token == ' ' && whoseTurnIs != ' ')
+        {
+            Cell cell1 = new Cell();
+            cell1.setToken(whoseTurnIs);
+
+            if(whoWon(whoseTurnIs))
+            {
+                System.out.println("The " + whoseTurnIs + " won!");
+            } else if(fullBoard())
+            {
+                System.out.println("Draw :/");
+                whoseTurnIs = ' ';
+            } else {
+                whoseTurnIs = (whoseTurnIs == 'X') ? 'X' : 'O';
+                System.out.println(whoseTurnIs + "'s turn.");
+            }
+        }
     }
 }
