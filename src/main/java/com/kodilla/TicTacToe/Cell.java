@@ -63,11 +63,11 @@ public class Cell extends Pane
             setToken(whoseTurnIs);
 
 
-            if (whoWon.theGame(whoseTurnIs)) {
+            if (theGame.whoWon(whoseTurnIs)) {
                 status.setText(whoseTurnIs + " won! Game Over");
                 whoseTurnIs = ' ';
             }
-            else if (boardIsFull.theGame()) {
+            else if (theGame.boardIsFull()) {
                 status.setText("Draw! Game Over");
                 whoseTurnIs = ' ';
             }
