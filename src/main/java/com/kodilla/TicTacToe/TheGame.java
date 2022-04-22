@@ -1,92 +1,108 @@
 package com.kodilla.TicTacToe;
 
+import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
 
-public class TheGame
-{
+public class TheGame extends Application {
     private char whoseTurnIs = 'X';
 
-    Cell[][] cell = new Cell[3][3];
+    private Cell[][] cell = new Cell[3][3];
 
-    GridPane pane = new GridPane();
+    private Label status = new Label("X's turn to play");
 
-    public void gridCreator() {
-        for (int i=0; i<3; i++)
-        {
-            for (int j=0; j<3; j++)
-            {
+    @Override
+    public void start(Stage primaryStage) {
+
+        Button xButton = new Button("X");
+        Button oButton = new Button("O");
+        Button exit = new Button("Exit");
+        Button play = new Button("New Game");
+        xButton.setStyle("-fx-font-size: 15pt;");
+        oButton.setStyle("-fx-font-size: 15pt;");
+        exit.setStyle("-fx-font-size: 15pt;");
+        play.setStyle("-fx-font-size: 15pt;");
+
+        exit.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+                Platform.exit();
+            }
+        });
+
+        GridPane pane = new GridPane();
+        for (int i = 0; i < 3; i++)
+            for (int j = 0; j < 3; j++)
                 pane.add(cell[i][j] = new Cell(), j, i);
-            }
-        }
+
+        BorderPane borderPane = new BorderPane();
+        borderPane.setCenter(pane);
+        borderPane.setBottom(status);
+
+        HBox buttonBar = new HBox();
+        buttonBar.setSpacing(87.0);
+        buttonBar.getChildren().addAll(xButton, oButton, play, exit);
+
+        borderPane.setTop(buttonBar);
+
+
+        Scene scene = new Scene(borderPane, 550, 470);
+        primaryStage.setTitle("TicTacToe");
+        primaryStage.setScene(scene);
+        primaryStage.show();
+        primaryStage.setResizable(false);
+        
+        cell.handleMouseClick(whoseTurnIs);
+
+
     }
 
-    public boolean whoWon(char token)
-    {
-        for(int i=0; i<3; i++) {
-            if (cell[i][0].getToken() == token &&
-                    cell[i][1].getToken() == token &&
-                    cell[i][2].getToken() == token) {
+    public boolean boardIsFull() {
+        for (int i = 0; i < 3; i++)
+            for (int j = 0; j < 3; j++)
+                if (cell[i][j].getToken() == ' ')
+                    return false;
+
+        return true;
+    }
+
+    public boolean whoWon(char token) {
+        for (int i = 0; i < 3; i++)
+            if (cell[i][0].getToken() == token
+                    && cell[i][1].getToken() == token
+                    && cell[i][2].getToken() == token) {
                 return true;
             }
-        }
-            
-        for(int j=0; j<3; j++)
-        {
-            if(cell[j][0].getToken() == token &&
-                    cell[j][1].getToken() == token &&
-                    cell[j][2].getToken() == token)
-            {
+
+        for (int j = 0; j < 3; j++)
+            if (cell[0][j].getToken() == token
+                    && cell[1][j].getToken() == token
+                    && cell[2][j].getToken() == token) {
                 return true;
             }
+
+        if (cell[0][0].getToken() == token
+                && cell[1][1].getToken() == token
+                && cell[2][2].getToken() == token) {
+            return true;
         }
 
-        if(cell[0][0].getToken() == token &&
-                cell[1][1].getToken() == token &&
-                cell[2][2].getToken() == token)
-        {
+        if (cell[0][2].getToken() == token
+                && cell[1][1].getToken() == token
+                && cell[2][0].getToken() == token) {
             return true;
-        } else if(cell[0][2].getToken() == token &&
-                cell[1][1].getToken() == token &&
-                cell[2][0].getToken() == token) {
-            return true;
-    }
+        }
 
         return false;
     }
 
-    public boolean fullBoard()
-    {
-        for (int i = 0; i < 3; i++)
-        {
-            for (int j = 0; j < 3; j++)
-            {
-                if(cell[i][j].getToken() == ' ')
-                {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
 
-    public void mouseClick(char token)
-    {
-        if(token == ' ' && whoseTurnIs != ' ')
-        {
-            Cell cell1 = new Cell();
-            cell1.setToken(whoseTurnIs);
-
-            if(whoWon(whoseTurnIs))
-            {
-                System.out.println("The " + whoseTurnIs + " won!");
-            } else if(fullBoard())
-            {
-                System.out.println("Draw :/");
-                whoseTurnIs = ' ';
-            } else {
-                whoseTurnIs = (whoseTurnIs == 'X') ? 'X' : 'O';
-                System.out.println(whoseTurnIs + "'s turn.");
-            }
-        }
-    }
 }
