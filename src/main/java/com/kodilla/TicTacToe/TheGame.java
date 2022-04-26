@@ -19,6 +19,14 @@ public class TheGame extends Application {
 
     private Label status = new Label("X's turn to play");
 
+    public char getWhoseTurnIs() {
+        return whoseTurnIs;
+    }
+
+    public Label getStatus() {
+        return status;
+    }
+
     @Override
     public void start(Stage primaryStage) {
 
@@ -59,9 +67,6 @@ public class TheGame extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
         primaryStage.setResizable(false);
-        
-        cell.handleMouseClick(whoseTurnIs);
-
 
     }
 

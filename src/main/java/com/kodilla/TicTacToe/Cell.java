@@ -10,10 +10,18 @@ public class Cell extends Pane
 {
     private char token = ' ';
 
+    TheGame theGame = new TheGame();
+    boolean full = theGame.boardIsFull();
+    boolean won;
+    char whoseTurn = theGame.getWhoseTurnIs();
+    Label status = theGame.getStatus();
+
+
     public Cell() {
         setStyle("-fx-border-color: black");
         this.setPrefSize(2000, 2000);
-        this.setOnMouseClicked(e -> handleMouseClick());
+        this.setOnMouseClicked(e -> gameStatusChanger());
+        won = theGame.whoWon(whoseTurn);
     }
 
     public char getToken() {
@@ -56,24 +64,23 @@ public class Cell extends Pane
         }
     }
 
-    private void handleMouseClick(char whoseTurnIs, Label status) {
-        TheGame theGame = new TheGame();
+    private void gameStatusChanger() {
 
-        if (token == ' ' && whoseTurnIs != ' ') {
-            setToken(whoseTurnIs);
+        if (token == ' ' && whoseTurn != ' ') {
+            setToken(whoseTurn);
 
-
-            if (theGame.whoWon(whoseTurnIs)) {
-                status.setText(whoseTurnIs + " won! Game Over");
-                whoseTurnIs = ' ';
+            // Check game status
+            if (won) {
+                status.setText(whoseTurn + " won!");
+                whoseTurn = ' ';
             }
-            else if (theGame.boardIsFull()) {
-                status.setText("Draw! Game Over");
-                whoseTurnIs = ' ';
+            else if (full) {
+                status.setText("Draw!");
+                whoseTurn = ' ';
             }
             else {
-                whoseTurnIs = (whoseTurnIs == 'X') ? 'O' : 'X';
-                status.setText(whoseTurnIs + "'s turn.");
+                whoseTurn = (whoseTurn == 'X') ? 'O' : 'X';
+                status.setText(whoseTurn + "'s turn");
             }
         }
     }
