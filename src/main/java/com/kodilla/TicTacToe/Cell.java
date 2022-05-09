@@ -10,18 +10,19 @@ public class Cell extends Pane
 {
     private char token = ' ';
 
-    TheGame theGame = new TheGame();
-    boolean full = theGame.boardIsFull();
+    GameLogic logic = new GameLogic();
+    boolean full = logic.boardIsFull();
     boolean won;
-    char whoseTurn = theGame.getWhoseTurnIs();
-    Label status = theGame.getStatus();
+    char whoseTurn = logic.getWhoseTurnIs();
+    Label status = logic.getStatus();
 
 
-    public Cell() {
+    public Cell()
+    {
         setStyle("-fx-border-color: black");
         this.setPrefSize(2000, 2000);
         this.setOnMouseClicked(e -> gameStatusChanger());
-        won = theGame.whoWon(whoseTurn);
+        won = logic.whoWon(whoseTurn);
     }
 
     public char getToken() {
@@ -42,7 +43,6 @@ public class Cell extends Pane
                     this.heightProperty().subtract(10));
             line2.endXProperty().bind(this.widthProperty().subtract(10));
 
-            // Add the lines to the pane
             this.getChildren().addAll(line1, line2);
         }
         else if (token == 'O') {
@@ -57,7 +57,7 @@ public class Cell extends Pane
                     this.widthProperty().divide(2).subtract(10));
             ellipse.radiusYProperty().bind(
                     this.heightProperty().divide(2).subtract(10));
-            ellipse.setStroke(Color.BLACK);
+            ellipse.setStroke(Color.PINK);
             ellipse.setFill(Color.WHITE);
 
             getChildren().add(ellipse);
@@ -69,7 +69,6 @@ public class Cell extends Pane
         if (token == ' ' && whoseTurn != ' ') {
             setToken(whoseTurn);
 
-            // Check game status
             if (won) {
                 status.setText(whoseTurn + " won!");
                 whoseTurn = ' ';
